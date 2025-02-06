@@ -18,11 +18,6 @@ jobs:
         with:
           php-version: "8.3"
 
-      - name: Install Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php
-          sudo mv composer.phar /usr/local/bin/composer
-
       - name: Install dependencies
         run: composer install
 
@@ -42,11 +37,6 @@ jobs:
         with:
           php-version: "8.3"
       
-      - name: Install Composer
-        run: |
-          curl -sS https://getcomposer.org/installer | php
-          sudo mv composer.phar /usr/local/bin/composer
-
       - name: Install dependencies
         run: composer install
 
@@ -73,14 +63,3 @@ jobs:
 
           # Restart Apache if needed
           ssh -o StrictHostKeyChecking=no $USERNAME@$HOST "sudo systemctl restart apache2"
-
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/hola-mundo-multilenguaje:${{ github.sha }} .
-
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: Push Docker image to Docker Hub
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/hola-mundo-multilenguaje:${{ github.sha }}
